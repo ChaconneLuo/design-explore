@@ -8,3 +8,14 @@ export interface Branch {
   length: number;
   theta: number;
 }
+
+export interface PanelInfo {
+  id: string;
+  name: string;
+}
+
+export interface TagLinkInfo {
+  no: string;
+  path: string;
+  name: string;
+}

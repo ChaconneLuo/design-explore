@@ -17,7 +17,7 @@ export default defineConfig({
     Pages({
       dirs: [
         { dir: 'src/pages', baseRoute: '' },
-        { dir: 'src/components/', baseRoute: '' },
+        { dir: 'src/canvas/', baseRoute: '' },
       ],
     }),
   ],

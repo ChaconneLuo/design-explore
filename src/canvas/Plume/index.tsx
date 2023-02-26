@@ -10,11 +10,14 @@ interface IProps {
 }
 
 export default function usePlume({ HEIGHT = 600, WIDTH = 700, color = '#bfbfbf' }: IProps) {
-  const el = useContext(CanvasContext)?.canvasRef;
+  const canvasContext = useContext(CanvasContext);
+  const el = canvasContext?.canvasRef;
   const canvas = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
   let ctx: CanvasRenderingContext2D;
   const pendingTask: Function[] = [];
+  let frameCount = 0;
+  let animationFrameId: number;
   const init = (width: number, height: number) => {
     canvas.current = el.current!;
     context.current = canvas.current!.getContext('2d');
@@ -97,11 +100,10 @@ export default function usePlume({ HEIGHT = 600, WIDTH = 700, color = '#bfbfbf' 
     pendingTask.length = 0;
     tasks.forEach((fn) => fn());
   };
-  let frameCount = 0;
   const startFrame = () => {
-    requestAnimationFrame(() => {
+    animationFrameId = requestAnimationFrame(() => {
       frameCount++;
-      if (frameCount % 20 === 0) {
+      if (frameCount % 10 === 0) {
         frame();
       }
       startFrame();
@@ -111,5 +113,9 @@ export default function usePlume({ HEIGHT = 600, WIDTH = 700, color = '#bfbfbf' 
     init(WIDTH, HEIGHT);
     draw();
     startFrame();
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      canvasContext.recover();
+    };
   }, []);
 }
