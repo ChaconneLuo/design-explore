@@ -19,6 +19,7 @@ export default defineConfig({
         { dir: 'src/pages', baseRoute: '' },
         { dir: 'src/canvas/', baseRoute: '' },
       ],
+      exclude: ['src/cannvas/assets', 'src/cannvas/**/*'],
     }),
   ],
 });
