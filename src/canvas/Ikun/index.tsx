@@ -1,15 +1,19 @@
 import { CanvasContext } from '@/src/stores/canvas';
 import { Point } from '@/src/types';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import kun from './assets/img/kun.png';
+import jntm from './assets/audio/jntm.mp3';
+import ngm from './assets/audio/ngm.mp3';
+import j from './assets/audio/j.mp3';
 
 interface IProps {
   HEIGHT: number;
   WIDTH: number;
   color: string;
+  maxLength: number;
 }
 
-export default function useIkun({ HEIGHT = 600, WIDTH = 600, color = '#182562' }: IProps) {
+export default function useIkun({ HEIGHT = 600, WIDTH = 1000, color = '#182562', maxLength = 450 }: IProps) {
   const canvasContext = useContext(CanvasContext);
   const el = canvasContext?.canvasRef;
   const canvas = useRef<HTMLCanvasElement | null>(null);
@@ -25,6 +29,8 @@ export default function useIkun({ HEIGHT = 600, WIDTH = 600, color = '#182562' }
   const [triggerOffset, setTriggerOffset] = useState<Point>({ x: 0, y: 0 });
   let triggerPoint: Point = { x: WIDTH / 2, y: HEIGHT / 2 };
   const offset = { x: 0, y: 0 };
+
+  const audios = useMemo(() => [new Audio(ngm), new Audio(jntm), new Audio(j)], []);
 
   const updateOffset = () => {
     offset.x = canvas.current!.offsetLeft;
@@ -77,28 +83,48 @@ export default function useIkun({ HEIGHT = 600, WIDTH = 600, color = '#182562' }
   };
   const dragEventFunc = (e: MouseEvent) => {
     e.preventDefault();
+    setTriggerOffset({ x: WIDTH / 2 + offset.x - triggerPoint.x, y: HEIGHT / 2 + offset.y - triggerPoint.y });
     triggerPoint.x = e.pageX;
     triggerPoint.y = e.pageY;
-    setTriggerOffset({ x: WIDTH / 2 + offset.x - triggerPoint.x, y: HEIGHT / 2 + offset.y - triggerPoint.y });
     setDragTrigger(true);
   };
   const moveFunc = (e: MouseEvent) => {
     e.preventDefault();
     if (dragTrigger) {
-      triggerPoint.x = e.pageX;
-      triggerPoint.y = e.pageY;
-      imgContainer.current!.style.transform = `translate3d(${triggerPoint.x - WIDTH / 2 - imgWidth / 2 - offset.x + triggerOffset.x}px, ${triggerPoint.y - HEIGHT / 2 - imgHeight / 2 - offset.y + triggerOffset.y}px, 0)`;
+      const y_distence: number = offset.y + HEIGHT - e.pageY - triggerOffset.y;
+      const x_distence: number = e.pageX - triggerOffset.x - WIDTH / 2 - offset.x;
+      if (Math.sqrt(x_distence * x_distence + y_distence * y_distence) < maxLength) {
+        triggerPoint.x = e.pageX;
+        triggerPoint.y = e.pageY;
+        imgContainer.current!.style.transformOrigin = 'center';
+        imgContainer.current!.style.transform = `translate3d(${triggerPoint.x - WIDTH / 2 - imgWidth / 2 - offset.x + triggerOffset.x}px, ${triggerPoint.y - HEIGHT / 2 - imgHeight / 2 - offset.y + triggerOffset.y}px, 0) rotate(${-Math.atan2(y_distence, x_distence) + Math.PI / 2}rad)`;
+      }
     }
   };
   const freeFunc = (e: MouseEvent) => {
     setDragTrigger(false);
+    setTriggerOffset({ x: 0, y: 0 });
+    updateOffset();
+    playAudio();
+  };
+  const playAudio = () => {
+    const random = Math.floor((Math.random() * 10000) % 3);
+    for (let audio of audios) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    audios[random].play();
   };
   const initEvent = () => {
     imgContainer.current!.addEventListener('mousedown', dragEventFunc);
-    document.getElementById('root')!.addEventListener('mousemove', moveFunc);
-    document.getElementById('root')!.addEventListener('mouseup', freeFunc);
+    document.addEventListener('mousemove', moveFunc);
+    document.addEventListener('mouseup', freeFunc);
   };
-  const cacelEvent = () => {};
+  const cacelEvent = () => {
+    imgContainer.current!.removeEventListener('mousedown', dragEventFunc);
+    document.removeEventListener('mousemove', moveFunc);
+    document.removeEventListener('mouseup', freeFunc);
+  };
 
   const frame = () => {
     draw();
@@ -116,7 +142,6 @@ export default function useIkun({ HEIGHT = 600, WIDTH = 600, color = '#182562' }
     initKunImage();
     updateOffset();
     initEvent();
-    draw();
     startFrame();
     return () => {
       removeKunImage();
