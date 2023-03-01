@@ -9,7 +9,7 @@ interface IProps {
   color: string;
 }
 
-export default function usePlume({ HEIGHT = 600, WIDTH = 700, color = '#bfbfbf' }: IProps) {
+export default function usePlume({ HEIGHT = 600, WIDTH = 1000, color = '#bfbfbf' }: IProps) {
   const canvasContext = useContext(CanvasContext);
   const el = canvasContext?.canvasRef;
   const canvas = useRef<HTMLCanvasElement | null>(null);
