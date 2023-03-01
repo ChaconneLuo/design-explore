@@ -102,10 +102,12 @@ export default function useIkun({ HEIGHT = 600, WIDTH = 1000, color = '#182562',
     }
   };
   const freeFunc = (e: MouseEvent) => {
+    if (dragTrigger) {
+      playAudio();
+    }
     setDragTrigger(false);
     setTriggerOffset({ x: 0, y: 0 });
     updateOffset();
-    playAudio();
   };
   const playAudio = () => {
     const random = Math.floor((Math.random() * 10000) % 3);
