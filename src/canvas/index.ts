@@ -11,6 +11,10 @@ const panelInfoList: PanelInfo[] = [
     id: 'Ikun',
     name: 'Ikun',
   },
+  {
+    id:'Triangle',
+    name: 'Triangle',
+  }
 ];
 
 export const infoListLinks: TagLinkInfo[] = panelInfoList.map((item: PanelInfo, index: number) => {
