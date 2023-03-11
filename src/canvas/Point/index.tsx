@@ -3,7 +3,6 @@ import React, { MouseEventHandler, useEffect, useRef } from 'react';
 import vertShaderSource from './shaders/vert.vs.glsl?raw';
 import fragShaderSource from './shaders/frag.fs.glsl?raw';
 import { Point } from '@/src/types';
-import { RequiredKeys } from '@/src/utils/type';
 
 interface IProps {
     HEIGHT: number;
@@ -24,7 +23,7 @@ export default function Triangle({ HEIGHT = 600, WIDTH = 800 }: IProps) {
 	const context = useRef<WebGLRenderingContext | null>(null);
 	const webglProgram = useRef<WebGLProgram | null>(null);
 	const offset = useRef<Point>({ x: 0, y: 0 });
-	const points = useRef<RequiredKeys<Point, 'color'>[]>([]);
+	const points = useRef<Point[]>([]);
 	let gl: WebGLRenderingContext;
 	let animationFrameId: number;
 
@@ -75,11 +74,11 @@ export default function Triangle({ HEIGHT = 600, WIDTH = 800 }: IProps) {
 		const a_Position = gl.getAttribLocation(program, 'a_Position');
 		const u_Color = gl.getUniformLocation(program, 'u_Color');
 		const a_Screen_Size = gl.getAttribLocation(program, 'a_Screen_Size');
-		points.current.forEach((point: RequiredKeys<Point, 'color'>) => {
+		points.current.forEach((point: Point) => {
 			const { x, y, color } = point;
 			gl.vertexAttrib2f(a_Position, x, y);
 			gl.vertexAttrib2f(a_Screen_Size, WIDTH, HEIGHT);
-			gl.uniform4f(u_Color, color.r, color.g, color.b, color.a);
+			gl.uniform4f(u_Color, color!.r, color!.g, color!.b, color!.a);
 			gl.drawArrays(gl.POINTS, 0, 1);
 		});
 	};

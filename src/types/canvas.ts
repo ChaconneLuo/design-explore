@@ -1,3 +1,5 @@
+import { RequiredKeys } from '../utils/type';
+
 export type Point = {
   x: number;
   y: number;
