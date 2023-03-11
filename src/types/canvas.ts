@@ -1,6 +1,13 @@
-export interface Point {
+export type Point = {
   x: number;
   y: number;
+  z?: number;
+  color?: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  }
 }
 
 export interface Branch {

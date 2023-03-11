@@ -1,16 +1,13 @@
-import { Suspense } from 'react';
-import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
-import { CanvasProvider } from './stores/canvas';
+import React, { Suspense } from 'react';
+import { useRoutes } from 'react-router-dom';
 import routes from '~react-pages';
 
 function App() {
-  return (
-    <>
-      <CanvasProvider>
-        <Suspense>{useRoutes(routes)}</Suspense>
-      </CanvasProvider>
-    </>
-  );
+	return (
+		<>
+			<Suspense>{useRoutes(routes)}</Suspense>
+		</>
+	);
 }
 
 export default App;

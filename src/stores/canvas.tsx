@@ -11,20 +11,20 @@ interface IProps {
 
 export const CanvasContext = createContext<CanvasContextProps>({} as CanvasContextProps);
 export const CanvasProvider = ({ children }: IProps): JSX.Element => {
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const recoverCanvas = () => {
+	const canvas = useRef<HTMLCanvasElement>(null);
+	const recoverCanvas = () => {
     canvas.current!.width = 0;
     canvas.current!.height = 0;
-  };
-  return (
-    <CanvasContext.Provider
-      value={{
-        canvasRef: canvas,
-        recover: recoverCanvas,
-      }}
-    >
-      <canvas ref={canvas} width={0} height={0} />
-      {children}
-    </CanvasContext.Provider>
-  );
+	};
+	return (
+		<CanvasContext.Provider
+			value={{
+				canvasRef: canvas,
+				recover: recoverCanvas,
+			}}
+		>
+			<canvas ref={canvas} width={0} height={0} />
+			{children}
+		</CanvasContext.Provider>
+	);
 };

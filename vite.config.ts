@@ -6,20 +6,20 @@ import Pages from 'vite-plugin-pages';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './'),
-    },
-  },
-  plugins: [
-    react(),
-    UnoCss(),
-    Pages({
-      dirs: [
-        { dir: 'src/pages', baseRoute: '' },
-        { dir: 'src/canvas/', baseRoute: '' },
-      ],
-      exclude: ['src/cannvas/assets', 'src/cannvas/**/*'],
-    }),
-  ],
+	resolve: {
+		alias: {
+			'@': resolve(__dirname, './'),
+		},
+	},
+	plugins: [
+		react(),
+		UnoCss(),
+		Pages({
+			dirs: [
+				{ dir: 'src/pages', baseRoute: '' },
+				{ dir: 'src/canvas/', baseRoute: '' },
+			],
+			exclude: ['src/cannvas/assets', 'src/cannvas/**/*'],
+		}),
+	],
 });

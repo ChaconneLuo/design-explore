@@ -3,24 +3,24 @@ import { PanelBasePath } from './../common/constants';
 import { PanelInfo, TagLinkInfo } from './../types/canvas';
 
 const panelInfoList: PanelInfo[] = [
-  {
-    id: 'Plume',
-    name: 'Plume',
-  },
-  {
-    id: 'Ikun',
-    name: 'Ikun',
-  },
-  {
-    id:'Triangle',
-    name: 'Triangle',
-  }
+	{
+		id: 'Plume',
+		name: 'Plume',
+	},
+	{
+		id: 'Ikun',
+		name: 'Ikun',
+	},
+	{
+		id: 'Point',
+		name: 'Point',
+	}
 ];
 
 export const infoListLinks: TagLinkInfo[] = panelInfoList.map((item: PanelInfo, index: number) => {
-  return {
-    no: `${index + 1}`.padStart(getNumberBit(panelInfoList.length), '0'),
-    path: PanelBasePath + item.id,
-    name: item.name,
-  };
+	return {
+		no: `${index + 1}`.padStart(getNumberBit(panelInfoList.length), '0'),
+		path: PanelBasePath + item.id,
+		name: item.name,
+	};
 });
