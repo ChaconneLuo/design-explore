@@ -12,6 +12,8 @@ export type Point = {
   }
 }
 
+export type PointColorRequired = RequiredKeys<Point, 'color'>;
+
 export interface Branch {
   start: Point;
   length: number;
