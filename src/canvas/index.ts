@@ -14,6 +14,9 @@ const panelInfoList: PanelInfo[] = [
 	{
 		id: 'Point',
 		name: 'Point',
+	}, {
+		id: 'Triangle',
+		name: 'Triangle'
 	}
 ];
 

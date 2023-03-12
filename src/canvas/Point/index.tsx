@@ -49,7 +49,6 @@ export default function Triangle({ HEIGHT = 600, WIDTH = 800 }: IProps) {
 		gl.useProgram(program);
 		context.current = gl;
 		clearColor();
-		gl.drawArrays(gl.POINTS, 0, 1);
 	};
 
 	const getOffset = () => {
