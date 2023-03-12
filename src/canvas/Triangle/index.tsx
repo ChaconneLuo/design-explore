@@ -42,6 +42,7 @@ export default function RotateTriangle({ HEIGHT = 500, WIDTH = 600, size = 30 }:
 		const point3 = { x: x + size / 2, y: y + Math.sqrt(3) / 6 * size, color };
 		return [point1, point2, point3];
 	};
+
 	const init = () => {
 		const gl = canvas.current?.getContext('webgl');
 		if (!gl) {
@@ -57,16 +58,19 @@ export default function RotateTriangle({ HEIGHT = 500, WIDTH = 600, size = 30 }:
 		context.current = gl;
 		clearColor();
 	};
+
 	const getOffset = () => {
 		const { left, top } = canvas.current!.getBoundingClientRect();
 		offset.current = { x: left, y: top };
 	};
+
 	const handClick: MouseEventHandler<HTMLCanvasElement> = (e) => {
 		const { pageX, pageY } = e;
 		const x = pageX - offset.current.x;
 		const y = pageY - offset.current.y;
 		points.current.push(...getTriangle(x, y, size));
 	};
+
 	const draw = () => {
 		const gl = context.current!;
 		const program = webglProgram.current!;
@@ -81,7 +85,6 @@ export default function RotateTriangle({ HEIGHT = 500, WIDTH = 600, size = 30 }:
 		const colors: number[] = points.current.reduce((pre: number[], curr: PointColorRequired) => { pre.push(curr.color.r, curr.color.g, curr.color.b, curr.color.a); return pre; }, []);
 		const vertexBuffer = gl.createBuffer();
 		const colorBuffer = gl.createBuffer();
-		console.log(vertexs);
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexs), gl.DYNAMIC_DRAW);
@@ -104,12 +107,15 @@ export default function RotateTriangle({ HEIGHT = 500, WIDTH = 600, size = 30 }:
 			startFrame();
 		});
 	};
+
 	const eventListener = () => {
 		window.addEventListener('resize', getOffset);
 	};
+
 	const cacelEventListener = () => {
 		window.removeEventListener('resize', getOffset);
 	};
+
 	const mounted = () => {
 		init();
 		getOffset();
@@ -121,6 +127,7 @@ export default function RotateTriangle({ HEIGHT = 500, WIDTH = 600, size = 30 }:
 			cacelEventListener();
 		};
 	};
+
 	useEffect(mounted, []);
 	return <>
 		<canvas ref={canvas} height={HEIGHT} width={WIDTH} onClick={handClick}></canvas>
